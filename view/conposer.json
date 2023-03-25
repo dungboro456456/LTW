@@ -1,0 +1,12 @@
+{
+    "name": "nguyentandung/dien-tu",
+    "type": "project",
+    "description": "Xay dung website ban may tinh",
+    "autoload": {
+        "psr-4": {"App\\":"App/"} 
+    },
+    "require": {
+            "illuminate/database": "^10.1",
+            "illuminate/events": "^10.1"
+    }
+}
