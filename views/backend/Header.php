@@ -1,3 +1,10 @@
+<?php
+ob_start(); // bắt đầu bộ đệm đầu ra
+
+// tiếp theo là các câu lệnh PHP của bạn
+// ...
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +28,7 @@
 <script src="../public/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../public/dist/js/demo.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 
@@ -44,6 +52,14 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="index.php?option=category" class="nav-link">Tất cả các sản phẩm</a>
       </li>
+     <div class="d-flex float-end">
+     <li class="nav-item d-none d-sm-inline-block d-flex float-end">
+        <a href="register.php" class="nav-link">Đăng kí</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block d-flex float-end">
+        <a href="login.php" class="nav-link">Đăng nhập</a>
+      </li>
+     </div>
     </ul>
 
     <!-- Right navbar links -->
@@ -165,12 +181,6 @@
                 <a href="index.php?option=topic" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Chủ đề bài viết</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="index.php?option=page" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Trang đơn</p>
                 </a>
               </li>
             </ul>

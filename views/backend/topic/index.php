@@ -4,7 +4,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Topic;
 
-$list = Topic::all(); 
+$list = Topic::where('status','!=','0')->orderBy('created_at','DESC')->get();
 // var_dump($list); 
 ?> 
  
@@ -20,13 +20,13 @@ $list = Topic::all();
       <div class="container-fluid"> 
         <div class="row mb-2"> 
           <div class="col-sm-6"> 
-            <h1>Tất cả danh mục </h1> 
+            <h1>Tất cả Topic </h1> 
           </div> 
           <div class="col-sm-6"> 
-            <ol class="breadcrumb float-sm-right"> 
-              <li class="breadcrumb-item"><a href="#">Home</a></li> 
-              <li class="breadcrumb-item active">Blank Page</li> 
-            </ol> 
+          <div class="row float-right"> 
+              <a class="btn btn-success mr-1 px-1"  href="index.php?option=topic&cat=create"><i class="fa-solid fa-plus"></i>Thêm</a>
+              <a class="btn btn-danger mr-1 px-1"  href="index.php?option=topic&cat=trash"><i class="fa-solid fa-trash"></i>Thùng Rác</a> 
+            </div> 
           </div> 
         </div> 
       </div><!-- /.container-fluid --> 
@@ -35,7 +35,34 @@ $list = Topic::all();
     <!-- Main content --> 
     <section class="content"> 
    
- 
+    <script>
+$(document).ready(function(){
+  // bắt sự kiện click vào nút toggle
+  $('.toggle-btn').click(function(e){
+    e.preventDefault();
+    var id = $(this).data('id'); // lấy id của category
+    var url = $(this).attr('href'); // lấy url của request
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: {id: id},
+      dataType: 'json',
+      success: function(response) {
+        if(response.success) {
+          // nếu update thành công thì cập nhật trạng thái của toggle
+          $('.toggle-btn[data-id="'+id+'"]').toggleClass('btn-success btn-danger');
+          $('.toggle-btn[data-id="'+id+'"] i').toggleClass('fa-toggle-on fa-toggle-off');
+          // hiển thị message
+          $('.message').html('<div class="alert alert-'+response.type+'">'+response.msg+'</div>');
+        } else {
+          // nếu có lỗi thì hiển thị message
+          $('.message').html('<div class="alert alert-'+response.type+'">'+response.msg+'</div>');
+        }
+      }
+    });
+  });
+});
+</script>
 <!-- Default box --> 
 <div class="card"> 
   <div class="card-header"> 
@@ -59,6 +86,8 @@ $list = Topic::all();
                 <th>Tên Chủ Đề</th> 
                 <th>Mô Tả Từ khóa</th> 
                 <th>Ngày Tạo</th> 
+                <th>Chức năng</th> 
+
             </tr> 
         </thead> 
         <tbody> 
@@ -72,6 +101,36 @@ $list = Topic::all();
                 <td><?=$row['metakey']?></td> 
                 <td><?=$row['metadesc']?></td> 
                 <td><?=$row['created_at']?></td> 
+                <td>
+
+            <div class="container " style="align-items:center">
+            <?php if($row['status']==1):?>
+            <button class="btn btn-sm btn-success p-3 m-2 toggle-btn" name="id" data-id="<?=$row['id'];?>" style="border-radius: 17%" href="index.php?option=topic&cat=status&id=<?=$row['id'];?>"> 
+            <i class="fas fa-toggle-on"></i>
+            </button>
+            <?php else:?>
+            <button class="btn btn-sm btn-danger p-3 m-2 toggle-btn" name="id" data-id="<?=$row['id'];?>" style="border-radius: 17%" href="index.php?option=topic&cat=status&id=<?=$row['id'];?>"> 
+            <i class="fas fa-toggle-off"></i>
+            </button>
+            <?php endif;?>
+
+
+
+              <a class="btn btn-sm btn-info p-3 m-2" style="border-radius: 17%"; href="index.php?option=topic&cat=detail&id=<?=$row['id'];?>"> 
+              <i class="fa-solid fa-circle-info"></i>
+              </a>
+
+              <a class="btn btn-sm btn-success p-3 m-2" style="border-radius: 17%"; href="index.php?option=topic&cat=edit&id=<?=$row['id'];?>"> 
+              <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+              <a class="btn btn-sm btn-danger  p-3 m-2" style="border-radius: 17%"; href="index.php?option=topic&cat=delete&id=<?=$row['id'];?>"> 
+                  <i class="fas fa-trash"></i>
+                  </a>
+
+              
+
+</td> 
+
             </tr> 
             <?php endforeach;?> 
         </tbody> 
